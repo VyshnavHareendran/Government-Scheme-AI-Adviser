@@ -47,7 +47,7 @@ export function EmployeeLayout() {
       <div className="flex min-h-screen">
         <aside className="hidden w-64 shrink-0 border-r border-app-border bg-app-surface lg:flex lg:flex-col">
           <div className="flex h-16 items-center border-b border-app-border px-6">
-            <div className="flex items-center gap-3">
+            <div className="flex min-w-0 items-center gap-3">
               <img
                 src="/logo_CIVORA.png"
                 alt="CIVORA"
@@ -212,11 +212,11 @@ export function EmployeeLayout() {
                 <Menu className="h-4 w-4" />
               </button>
 
-              <div>
+              <div className="min-w-0">
                 <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-app-muted">
                   Employee Portal
                 </p>
-                <h1 className="text-base font-semibold sm:text-lg">
+                <h1 className="truncate text-base font-semibold sm:text-lg">
                   CIVORA Service Center
                 </h1>
               </div>

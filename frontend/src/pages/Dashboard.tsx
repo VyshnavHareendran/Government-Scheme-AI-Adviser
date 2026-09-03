@@ -25,10 +25,10 @@ export function Dashboard() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-app-text">
+        <h1 className="break-words text-xl font-semibold text-app-text sm:text-2xl">
           {greeting()}, {user?.full_name}
         </h1>
-        <p className="mt-1 text-sm text-app-muted">
+        <p className="mt-1 max-w-2xl text-sm text-app-muted">
           Here is your personalized government scheme overview.
         </p>
       </div>
@@ -80,9 +80,9 @@ export function Dashboard() {
         />
       </div>
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-[1fr_340px]">
+      <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
         <section>
-          <div className="mb-4 flex items-center justify-between gap-3">
+          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-lg font-semibold text-app-text">Recommended for You</h2>
               <p className="text-sm text-app-muted">Top backend-ranked recommendations.</p>
@@ -166,7 +166,7 @@ function MetricCard({
         <div className="rounded-md bg-slate-100 p-2 text-brand-primary">{icon}</div>
         <Badge variant={badgeVariant}>{label}</Badge>
       </div>
-      <p className="mt-4 line-clamp-2 min-h-14 text-2xl font-semibold text-app-text">{value}</p>
+      <p className="mt-4 min-h-14 line-clamp-2 text-2xl font-semibold text-app-text">{value}</p>
     </Card>
   );
 }

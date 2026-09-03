@@ -116,7 +116,7 @@ export function AdminLayout() {
           {/* User section */}
           <div className="border-t border-app-border p-4">
             <div className="mb-3 rounded-lg bg-app-background p-3">
-              <div className="flex items-center gap-3">
+              <div className="flex min-w-0 items-center gap-3">
                 <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-primary text-xs font-semibold text-white">
                   {initials}
                 </div>
@@ -229,12 +229,11 @@ export function AdminLayout() {
                 ☰
               </button>
 
-              <div>
+              <div className="min-w-0">
                 <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-app-muted">
                   Administration
                 </p>
-
-                <h1 className="text-base font-semibold sm:text-lg">
+                <h1 className="truncate text-base font-semibold sm:text-lg">
                   CIVORA Control Center
                 </h1>
               </div>

@@ -11,7 +11,8 @@ const titles: Record<string, { title: string; description: string }> = {
   },
   "/profile": {
     title: "Citizen Profile",
-    description: "Eligibility data used by the Rule Engine and recommendation model.",
+    description:
+      "Eligibility data used by the Rule Engine and recommendation model.",
   },
   "/schemes": {
     title: "Schemes",
@@ -33,8 +34,13 @@ const titles: Record<string, { title: string; description: string }> = {
 
 function getHeaderMeta(pathname: string) {
   if (pathname.startsWith("/schemes/")) {
-    return { title: "Scheme Details", description: "Review eligibility and official application options." };
+    return {
+      title: "Scheme Details",
+      description:
+        "Review eligibility and official application options.",
+    };
   }
+
   return titles[pathname] ?? titles["/dashboard"];
 }
 
@@ -45,30 +51,42 @@ export function Header({ onMenuClick }: { onMenuClick: () => void }) {
 
   return (
     <header className="sticky top-0 z-20 border-b border-app-border bg-white">
-      <div className="flex h-16 items-center justify-between px-4 md:px-6">
-        <div className="flex items-center gap-3">
+      <div className="flex min-h-16 items-center justify-between gap-3 px-3 sm:px-4 md:px-6">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-3">
           <button
             aria-label="Open navigation"
-            className="rounded-md p-2 text-app-muted hover:bg-slate-100 lg:hidden"
+            className="shrink-0 rounded-md p-2 text-app-muted transition hover:bg-slate-100 hover:text-app-text lg:hidden"
             onClick={onMenuClick}
             type="button"
           >
             <Menu className="h-5 w-5" />
           </button>
-          <div className="lg:hidden">
+
+          <div className="shrink-0 lg:hidden">
             <Logo compact />
           </div>
-          <div className="hidden lg:block">
-            <h2 className="text-lg font-semibold text-app-text">{meta.title}</h2>
-            <p className="text-xs text-app-muted">{meta.description}</p>
+
+          <div className="hidden min-w-0 lg:block">
+            <h2 className="truncate text-lg font-semibold text-app-text">
+              {meta.title}
+            </h2>
+            <p className="truncate text-xs text-app-muted">
+              {meta.description}
+            </p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="hidden text-right sm:block">
-            <p className="text-sm font-medium text-app-text">{user?.full_name}</p>
-            <p className="text-xs text-app-muted">{user?.role}</p>
+
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          <div className="hidden max-w-48 text-right sm:block">
+            <p className="truncate text-sm font-medium text-app-text">
+              {user?.full_name}
+            </p>
+            <p className="truncate text-xs text-app-muted">
+              {user?.role}
+            </p>
           </div>
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-primary text-sm font-semibold text-white">
+
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-primary text-sm font-semibold text-white">
             {initials(user?.full_name ?? "User")}
           </div>
         </div>

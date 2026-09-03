@@ -61,9 +61,11 @@ export function RecommendationCard({
 
         <RecommendationReasons reasons={recommendation.reasons} />
 
-        <div className="mt-1">
-          <Link to={`/schemes/${recommendation.id}`}>
-            <Button variant="secondary">View Scheme</Button>
+       <div className="mt-1">
+          <Link to={`/schemes/${recommendation.id}`} className="block sm:inline-block">
+            <Button variant="secondary" className="w-full sm:w-auto">
+              View Scheme
+            </Button>
           </Link>
         </div>
       </div>
