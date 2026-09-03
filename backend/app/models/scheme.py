@@ -1,4 +1,11 @@
-from sqlalchemy import Boolean, DateTime, Integer, String, Text
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    DateTime,
+    Integer,
+    String,
+    Text,
+)
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql import func
 
@@ -38,6 +45,57 @@ class Scheme(Base):
 
     official_url: Mapped[str] = mapped_column(
         String(500),
+        nullable=False,
+    )
+
+    income_limit: Mapped[int] = mapped_column(
+        Integer,
+        nullable=True,
+    )
+
+    minimum_age: Mapped[int] = mapped_column(
+        Integer,
+        nullable=True,
+    )
+
+    maximum_age: Mapped[int] = mapped_column(
+        Integer,
+        nullable=True,
+    )
+
+    requires_land: Mapped[bool] = mapped_column(
+        Boolean,
+        default=False,
+        nullable=False,
+    )
+
+    requires_bpl: Mapped[bool] = mapped_column(
+        Boolean,
+        default=False,
+        nullable=False,
+    )
+
+    disability_priority: Mapped[bool] = mapped_column(
+        Boolean,
+        default=False,
+        nullable=False,
+    )
+
+    target_occupations: Mapped[list] = mapped_column(
+        JSON,
+        default=list,
+        nullable=False,
+    )
+
+    preferred_employment: Mapped[list] = mapped_column(
+        JSON,
+        default=list,
+        nullable=False,
+    )
+
+    preferred_education: Mapped[list] = mapped_column(
+        JSON,
+        default=list,
         nullable=False,
     )
 

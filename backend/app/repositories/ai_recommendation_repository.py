@@ -32,3 +32,21 @@ class AIRecommendationRepository:
             db=db,
             user_id=user_id,
         )
+
+    @staticmethod
+    def get_all_active_schemes(
+        db: Session,
+    ) -> list[Scheme]:
+        """
+        Returns all active schemes.
+
+        Used by the AI recommendation engine.
+        Does NOT affect the existing
+        rule-based recommendation flow.
+        """
+
+        return (
+            db.query(Scheme)
+            .filter(Scheme.is_active == True)
+            .all()
+        )

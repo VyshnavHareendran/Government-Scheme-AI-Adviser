@@ -14,11 +14,13 @@ class SchemeRepository:
         db_scheme = Scheme(**data)
 
         self.db.add(db_scheme)
+
         try:
             self.db.commit()
-        except:
+        except Exception:
             self.db.rollback()
             raise
+
         self.db.refresh(db_scheme)
 
         return db_scheme
@@ -42,23 +44,29 @@ class SchemeRepository:
         db_scheme: Scheme,
         scheme: SchemeUpdate,
     ) -> Scheme:
-        update_data = scheme.model_dump(exclude_unset=True)
+        update_data = scheme.model_dump(
+            exclude_unset=True,
+            mode="json",
+        )
 
         for field, value in update_data.items():
             setattr(db_scheme, field, value)
 
         try:
             self.db.commit()
-        except:
+        except Exception:
             self.db.rollback()
             raise
+
         self.db.refresh(db_scheme)
+
         return db_scheme
 
     def delete(self, db_scheme: Scheme) -> None:
         self.db.delete(db_scheme)
+
         try:
             self.db.commit()
-        except:
+        except Exception:
             self.db.rollback()
             raise

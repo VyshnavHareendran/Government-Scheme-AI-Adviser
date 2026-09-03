@@ -9,6 +9,7 @@ class LoginRequest(BaseModel):
 class LoginResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
+    must_change_password: bool = False
 
 
 class UserCreate(BaseModel):
@@ -23,7 +24,12 @@ class UserResponse(BaseModel):
     email: EmailStr
     role: str
     is_active: bool
+    must_change_password: bool
 
     model_config = {
         "from_attributes": True
     }
+
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str

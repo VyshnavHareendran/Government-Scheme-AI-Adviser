@@ -89,9 +89,9 @@ class CitizenGenerator:
 
         education = random.choices(
             population=[
-                "Higher Secondary",
+                "Plus Two",
                 "Diploma",
-                "Graduate",
+                "UG",
             ],
             weights=[
                 50,
@@ -141,9 +141,9 @@ class CitizenGenerator:
 
         education = random.choices(
             population=[
-                "Primary",
-                "Secondary",
-                "Higher Secondary",
+                "SSLC",
+                "Plus Two",
+                "Diploma",
             ],
             weights=[
                 40,
@@ -176,8 +176,8 @@ class CitizenGenerator:
             employment_status="Employed",
             education_level=random.choice(
                 [
-                    "Graduate",
-                    "Post Graduate",
+                    "UG",
+                    "PG",
                 ]
             ),
             family_size=random.randint(2, 6),
@@ -194,8 +194,8 @@ class CitizenGenerator:
             education_level=random.choice(
                 [
                     "Diploma",
-                    "Graduate",
-                    "Post Graduate",
+                    "UG",
+                    "PG",
                 ]
             ),
             family_size=random.randint(2, 6),
@@ -211,9 +211,9 @@ class CitizenGenerator:
             employment_status="Self-Employed",
             education_level=random.choice(
                 [
-                    "Higher Secondary",
-                    "Graduate",
-                    "Post Graduate",
+                    "Plus Two",
+                    "UG",
+                    "PG",
                 ]
             ),
             family_size=random.randint(2, 7),
@@ -229,10 +229,9 @@ class CitizenGenerator:
             employment_status="Unemployed",
             education_level=random.choice(
                 [
-                    "Primary",
-                    "Secondary",
-                    "Higher Secondary",
-                    "Graduate",
+                    "SSLC",
+                    "Plus Two",
+                    "UG",
                 ]
             ),
             family_size=random.randint(3, 8),
@@ -248,9 +247,9 @@ class CitizenGenerator:
             employment_status="Retired",
             education_level=random.choice(
                 [
-                    "Secondary",
-                    "Graduate",
-                    "Post Graduate",
+                    "SSLC",
+                    "UG",
+                    "PG",
                 ]
             ),
             family_size=random.randint(2, 6),
@@ -266,10 +265,9 @@ class CitizenGenerator:
             employment_status="Unemployed",
             education_level=random.choice(
                 [
-                    "Primary",
-                    "Secondary",
-                    "Higher Secondary",
-                    "Graduate",
+                    "SSLC",
+                    "Plus Two",
+                    "UG",
                 ]
             ),
             family_size=random.randint(2, 7),

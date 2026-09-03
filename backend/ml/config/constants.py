@@ -26,13 +26,11 @@ CATEGORIES = [
 
 # Education
 EDUCATION_LEVELS = [
-    "No Formal Education",
-    "Primary",
-    "Secondary",
-    "Higher Secondary",
+    "SSLC",
+    "Plus Two",
     "Diploma",
-    "Graduate",
-    "Post Graduate",
+    "UG",
+    "PG",
     "PhD",
 ]
 
