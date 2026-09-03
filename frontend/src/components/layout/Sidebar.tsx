@@ -10,6 +10,7 @@ import {
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { initials } from "../../utils/format";
+import { Logo } from "./Logo";
 
 const navItems = [
   { label: "Dashboard", to: "/dashboard", icon: Home },
@@ -27,11 +28,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
     <aside className="flex h-full flex-col border-r border-app-border bg-white">
       {/* Logo */}
       <div className="border-b border-app-border px-5 py-5">
-        <img
-          src="/logo_withoutword.png"
-          alt="CIVORA"
-          className="h-9 w-9 object-contain"
-        />
+        <Logo />
       </div>
 
       {/* Navigation */}
