@@ -64,3 +64,21 @@ Thumbs.db
 
 # CatBoost training logs
 backend/catboost_info/
+# -----------------------------
+# Local / Frontend Environment
+# -----------------------------
+*.db
+*.sqlite
+*.sqlite3
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# Generated Python files
+*.pyc
+
+# Generated ML datasets
+backend/datasets/*.csv
+
+# Temporary ML test scripts
+backend/scripts/test_*.py

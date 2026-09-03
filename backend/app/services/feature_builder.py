@@ -72,6 +72,32 @@ class FeatureBuilder:
             "land_holding": float(profile.land_holding),
             "bpl_card": profile.bpl_card,
             "disability_status": profile.disability_status,
-            "scheme_name": scheme.scheme_name,
-            "scheme_category": scheme.category,
+
+            # Scheme properties
+            "income_limit": scheme.income_limit,
+            "minimum_age": scheme.minimum_age,
+            "maximum_age": scheme.maximum_age,
+            "requires_land": scheme.requires_land,
+            "requires_bpl": scheme.requires_bpl,
+            "disability_priority": scheme.disability_priority,
+
+            # Citizen-scheme matching features
+            "occupation_match": (
+                profile.occupation
+                in (scheme.target_occupations or [])
+            ),
+
+            "employment_match": (
+                profile.employment_status.value
+                in (scheme.preferred_employment or [])
+            ),
+
+            "education_match": (
+                profile.education_level.value
+                in (scheme.preferred_education or [])
+            ),
+
+            # Category matching is currently kept
+            # as a feature for the V2 model.
+            "category_match": True,
         }

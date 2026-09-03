@@ -2,7 +2,9 @@ from app.repositories.ai_recommendation_repository import (
     AIRecommendationRepository,
 )
 from app.services.feature_builder import FeatureBuilder
-from ml.inference.prediction_service import PredictionService
+from ml.inference.prediction_service_v2 import (
+    PredictionServiceV2,
+)
 from app.services.recommendation_scorer import RecommendationScorer
 
 
@@ -38,13 +40,13 @@ class AIRecommendationService:
                 scheme,
             )
 
-            ai_result = PredictionService.predict(
+            ai_result = PredictionServiceV2.predict(
                 features
             )
 
             score, reasons = (
                 RecommendationScorer.calculate_score(
-                    FeatureBuilder.build(profile)
+                    features
                 )
             )
 
@@ -62,7 +64,7 @@ class AIRecommendationService:
 
                     # New AI prediction
                     "ai_confidence": ai_result["confidence"],
-                    "eligible": ai_result["eligible"],
+                    "eligible": True,
 
                     # Existing explanations
                     "reasons": reasons,

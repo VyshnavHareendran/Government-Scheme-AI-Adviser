@@ -1,11 +1,10 @@
 from datetime import date
-from decimal import Decimal
 
 from sqlalchemy.orm import Session
 
 from app.models.scheme import Scheme
 from app.repositories.rule_engine_repository import RuleEngineRepository
-
+from app.core.rule_evaluator import RuleEvaluator
 
 class RuleEngineService:
 
@@ -33,6 +32,9 @@ class RuleEngineService:
                 db,
                 scheme.id,
             )
+
+            if not rules:
+                continue
 
             eligible = True
 
@@ -62,11 +64,14 @@ class RuleEngineService:
                         None,
                     )
 
+                    if hasattr(citizen_value, "value"):
+                        citizen_value = citizen_value.value
+
                 if citizen_value is None:
                     eligible = False
                     break
 
-                if not RuleEngineService.evaluate_rule(
+                if not RuleEvaluator.evaluate(
                     citizen_value,
                     rule.operator,
                     rule.value,
@@ -79,38 +84,3 @@ class RuleEngineService:
 
         return eligible_schemes
 
-    @staticmethod
-    def evaluate_rule(
-        citizen_value,
-        operator,
-        rule_value,
-    ) -> bool:
-
-        if isinstance(citizen_value, Decimal):
-            rule_value = Decimal(rule_value)
-
-        elif isinstance(citizen_value, bool):
-            rule_value = rule_value.lower() == "true"
-
-        elif isinstance(citizen_value, int):
-            rule_value = int(rule_value)
-
-        if operator == "=":
-            return citizen_value == rule_value
-
-        elif operator == "!=":
-            return citizen_value != rule_value
-
-        elif operator == ">":
-            return citizen_value > rule_value
-
-        elif operator == ">=":
-            return citizen_value >= rule_value
-
-        elif operator == "<":
-            return citizen_value < rule_value
-
-        elif operator == "<=":
-            return citizen_value <= rule_value
-
-        return False

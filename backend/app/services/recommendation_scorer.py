@@ -1,40 +1,100 @@
 class RecommendationScorer:
 
     @staticmethod
-    def calculate_score(features: dict) -> tuple[int, list[str]]:
+    def calculate_score(
+        features: dict,
+    ) -> tuple[int, list[str]]:
 
         score = 50
         reasons = []
 
-        if features["annual_income"] <= 200000:
+        # -----------------------------
+        # Income
+        # -----------------------------
+        if (
+            features["income_limit"] is not None
+            and features["annual_income"]
+            <= features["income_limit"]
+        ):
             score += 15
-            reasons.append("Income satisfies scheme preference")
+            reasons.append(
+                "Income is within the scheme limit"
+            )
 
-        if features["bpl_card"]:
+        # -----------------------------
+        # Age
+        # -----------------------------
+        age = features["age"]
+
+        minimum_age = features["minimum_age"]
+        maximum_age = features["maximum_age"]
+
+        if (
+            (minimum_age is None or age >= minimum_age)
+            and
+            (maximum_age is None or age <= maximum_age)
+        ):
             score += 10
-            reasons.append("BPL card holder")
+            reasons.append(
+                "Age satisfies scheme requirements"
+            )
 
-        if features["disability_status"]:
+        # -----------------------------
+        # BPL
+        # -----------------------------
+        if features["requires_bpl"]:
+
+            if features["bpl_card"]:
+                score += 15
+                reasons.append(
+                    "BPL card requirement satisfied"
+                )
+
+        # -----------------------------
+        # Land
+        # -----------------------------
+        if features["requires_land"]:
+
+            if features["land_holding"] > 0:
+                score += 10
+                reasons.append(
+                    "Land requirement satisfied"
+                )
+
+        # -----------------------------
+        # Occupation
+        # -----------------------------
+        if features["occupation_match"]:
             score += 10
-            reasons.append("Disability support applicable")
+            reasons.append(
+                "Occupation matches scheme preference"
+            )
 
-        if features["occupation"]:
+        # -----------------------------
+        # Employment
+        # -----------------------------
+        if features["employment_match"]:
+            score += 10
+            reasons.append(
+                "Employment status matches scheme preference"
+            )
+
+        # -----------------------------
+        # Education
+        # -----------------------------
+        if features["education_match"]:
+            score += 10
+            reasons.append(
+                "Education level matches scheme preference"
+            )
+
+        # -----------------------------
+        # Category
+        # -----------------------------
+        if features["category_match"]:
             score += 5
-            reasons.append(f"Occupation: {features['occupation']}")
-
-        if features["education_level"]:
-            score += 5
-            education = features["education_level"]
-
-            if hasattr(education, "value"):
-                education = education.value
-
-            if education:
-                score += 5
-                reasons.append(f"Education: {education}")
-
-        if features["age"] >= 18:
-            score += 5
-            reasons.append("Eligible age")
+            reasons.append(
+                "Category matches scheme preference"
+            )
 
         return min(score, 100), reasons

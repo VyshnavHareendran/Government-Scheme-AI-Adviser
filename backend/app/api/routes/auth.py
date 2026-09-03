@@ -6,6 +6,7 @@ from app.database.dependencies import get_db, get_current_user
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
 from app.schemas.auth import (
+    ChangePasswordRequest,
     LoginRequest,
     LoginResponse,
     UserCreate,
@@ -51,7 +52,7 @@ def login(
     service = AuthService(UserRepository(db))
 
     try:
-        token = service.authenticate(
+        token, must_change_password = service.authenticate(
             form_data.username,
             form_data.password,
         )
@@ -59,11 +60,36 @@ def login(
         return {
             "access_token": token,
             "token_type": "bearer",
+            "must_change_password": must_change_password,
         }
 
     except ValueError as exc:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=str(exc),
+        )
+
+@router.post(
+    "/change-password",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def change_password(
+    request: ChangePasswordRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    service = AuthService(UserRepository(db))
+
+    try:
+        service.change_password(
+            user=current_user,
+            current_password=request.current_password,
+            new_password=request.new_password,
+        )
+
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(exc),
         )
 

@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Response
 from sqlalchemy.orm import Session
 
+from app.core.permissions import require_admin
 from app.database.dependencies import get_db
+from app.models.user import User
 from app.repositories.eligibility_rule_repository import (
     EligibilityRuleRepository,
 )
@@ -37,6 +39,7 @@ def create_rule(
     service: EligibilityRuleService = Depends(
         get_eligibility_rule_service
     ),
+    current_user=Depends(require_admin),
 ):
     return service.create_rule(rule)
 
@@ -53,15 +56,17 @@ def get_all_rules(
     return service.get_all_rules()
 
 
-@router.get(
+@router.put(
     "/{rule_id}",
     response_model=EligibilityRuleResponse,
 )
-def get_rule(
+def update_rule(
     rule_id: int,
+    rule: EligibilityRuleUpdate,
     service: EligibilityRuleService = Depends(
         get_eligibility_rule_service
     ),
+    current_user=Depends(require_admin),
 ):
     rule = service.get_rule(rule_id)
 
@@ -84,6 +89,7 @@ def update_rule(
     service: EligibilityRuleService = Depends(
         get_eligibility_rule_service
     ),
+    current_user: User = Depends(require_admin),
 ):
     updated = service.update_rule(rule_id, rule)
 
@@ -105,6 +111,7 @@ def delete_rule(
     service: EligibilityRuleService = Depends(
         get_eligibility_rule_service,
     ),
+    current_user=Depends(require_admin),
 ):
     deleted = service.delete_rule(rule_id)
 
