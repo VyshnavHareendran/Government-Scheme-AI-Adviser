@@ -33,6 +33,26 @@ export function Dashboard() {
         </p>
       </div>
 
+      {!profile.data && (
+        <Card className="mb-6 border border-amber-200 bg-amber-50">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-base font-semibold text-app-text">
+                Complete your profile to unlock CIVORA
+              </h2>
+              <p className="mt-1 max-w-2xl text-sm text-app-muted">
+                Your profile is required to check your eligibility for
+                government schemes and generate personalized AI recommendations.
+              </p>
+            </div>
+
+            <Link to="/profile" className="shrink-0">
+              <Button>Complete My Profile</Button>
+            </Link>
+          </div>
+        </Card>
+      )}
+
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <MetricCard
           icon={<UserRound className="h-5 w-5" />}
@@ -97,7 +117,7 @@ export function Dashboard() {
             <div className="mt-4 grid gap-3">
               <Link to="/profile">
                 <Button className="w-full justify-start" variant="secondary">
-                  Complete Profile
+                  {profile.data ? "View / Update Profile" : "Complete Profile"}
                 </Button>
               </Link>
               <Link to="/eligibility">

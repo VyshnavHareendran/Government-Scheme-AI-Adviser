@@ -27,7 +27,11 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <aside className="flex h-full flex-col border-r border-app-border bg-white">
       <div className="border-b border-app-border px-5 py-5">
-        <Logo />
+        <img
+          src="/logo_withoutword.png"
+          alt="CIVORA"
+          className="h-9 w-9 object-contain"
+        />
       </div>
       <nav className="flex-1 px-3 py-4" aria-label="Primary navigation">
         {navItems.map((item) => {

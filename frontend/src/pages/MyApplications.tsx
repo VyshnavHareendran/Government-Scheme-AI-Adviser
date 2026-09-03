@@ -37,7 +37,7 @@ export function MyApplications() {
             </p>
             <p className="mt-1 text-sm text-app-muted">
               CIVORA helps you track progress here. Complete the actual
-              government application, login, OTP, eKYC, documents, and final
+              government application, login, OTP, eKYC, documents
               submission on the official portal.
             </p>
           </div>
@@ -103,6 +103,24 @@ export function MyApplications() {
                   <p className="text-xs font-semibold text-app-text">Notes</p>
                   <p className="mt-1 text-sm text-app-muted">
                     {application.notes}
+                  </p>
+                </div>
+              ) : null}
+
+              {application.status === "Not Started" ? (
+                <div className="mt-4 rounded-md bg-sky-50 p-3">
+                  <p className="text-xs font-semibold text-sky-800">Next step</p>
+                  <p className="mt-1 text-sm text-sky-700">
+                    Open the official portal to complete your government application.
+                  </p>
+                </div>
+              ) : null}
+
+              {application.status === "In Progress" ? (
+                <div className="mt-4 rounded-md bg-sky-50 p-3">
+                  <p className="text-xs font-semibold text-sky-800">Next step</p>
+                  <p className="mt-1 text-sm text-sky-700">
+                    Continue your application on the official government portal.
                   </p>
                 </div>
               ) : null}

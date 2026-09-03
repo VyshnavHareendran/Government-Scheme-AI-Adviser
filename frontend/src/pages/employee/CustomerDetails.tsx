@@ -1,3 +1,4 @@
+import { AlertTriangle, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
@@ -86,9 +87,13 @@ export function CustomerDetails() {
   const [applicationDrafts, setApplicationDrafts] =
     useState<Record<number, { status: ApplicationStatus; notes: string }>>({});
 
+  const [applicationUpdateSuccess, setApplicationUpdateSuccess] =
+    useState<number | null>(null);
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -349,6 +354,8 @@ async function loadCustomerApplications() {
         },
       );
 
+      setApplicationUpdateSuccess(application.id);
+
       setApplications((current) =>
         current.map((currentApplication) =>
           currentApplication.id === application.id
@@ -518,14 +525,6 @@ async function loadCustomerApplications() {
 
   async function handleDelete() {
     if (!customer) {
-      return;
-    }
-
-    const confirmed = window.confirm(
-      `Delete customer "${customer.full_name}"? This action cannot be undone.`,
-    );
-
-    if (!confirmed) {
       return;
     }
 
@@ -1148,18 +1147,26 @@ async function loadCustomerApplications() {
                           </div>
                         </div>
 
-                        <button
-                          type="button"
-                          disabled={applicationActionLoading === application.id}
-                          onClick={() =>
-                            void handleApplicationStatusUpdate(application)
-                          }
-                          className="mt-4 rounded-lg bg-brand-primary px-4 py-2.5 text-sm font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-                        >
-                          {applicationActionLoading === application.id
-                            ? "Updating..."
-                            : "Update Application"}
-                        </button>
+                        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+                          <button
+                            type="button"
+                            disabled={applicationActionLoading === application.id}
+                            onClick={() =>
+                              void handleApplicationStatusUpdate(application)
+                            }
+                            className="rounded-lg bg-brand-primary px-4 py-2.5 text-sm font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                          >
+                            {applicationActionLoading === application.id
+                              ? "Updating..."
+                              : "Update Application"}
+                          </button>
+
+                          {applicationUpdateSuccess === application.id && (
+                            <p className="text-sm font-medium text-green-700">
+                              ✓ Application #{application.id} updated successfully.
+                            </p>
+                          )}
+                        </div>
                       </div>
                     </div>
                   );
@@ -1185,12 +1192,87 @@ async function loadCustomerApplications() {
         <button
           type="button"
           disabled={actionLoading || saving}
-          onClick={handleDelete}
-          className="mt-4 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+          onClick={() => setDeleteConfirmOpen(true)}
+          className="mt-4 inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
         >
+          <Trash2 className="h-4 w-4" />
           Delete Customer
         </button>
       </div>
+        
+      {/* Delete Customer Confirmation Modal */}
+      {deleteConfirmOpen && (
+        <div
+          className="fixed inset-0 z-[80] flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="delete-customer-title"
+        >
+          <div className="w-full max-w-md overflow-hidden rounded-2xl border border-app-border bg-white shadow-2xl">
+            <div className="p-6">
+              <div className="flex items-start gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-600">
+                  <AlertTriangle className="h-6 w-6" />
+                </div>
+
+                <div className="min-w-0">
+                  <h2
+                    id="delete-customer-title"
+                    className="text-lg font-semibold text-app-foreground"
+                  >
+                    Delete Customer?
+                  </h2>
+
+                  <p className="mt-1 text-sm text-app-muted">
+                    You are about to permanently delete this customer
+                    account.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-5 rounded-xl border border-red-100 bg-red-50 p-4">
+                <p className="text-sm font-semibold text-red-800">
+                  {customer.full_name}
+                </p>
+
+                <p className="mt-1 break-all text-sm text-red-700">
+                  {customer.email}
+                </p>
+
+                <p className="mt-3 text-xs leading-5 text-red-700">
+                  This action cannot be undone. The customer account and
+                  associated citizen profile will be permanently removed.
+                </p>
+              </div>
+
+              <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                <button
+                  type="button"
+                  onClick={() => setDeleteConfirmOpen(false)}
+                  disabled={actionLoading}
+                  className="rounded-lg border border-app-border px-4 py-2.5 text-sm font-medium text-app-foreground hover:bg-app-background disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => void handleDelete()}
+                  disabled={actionLoading}
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <Trash2 className="h-4 w-4" />
+
+                  {actionLoading
+                    ? "Deleting..."
+                    : "Delete Customer"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

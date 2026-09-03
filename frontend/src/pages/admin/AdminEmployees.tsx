@@ -62,6 +62,9 @@ export function AdminEmployees() {
   const [selectedEmployee, setSelectedEmployee] =
     useState<AdminEmployee | null>(null);
 
+  const [statusEmployee, setStatusEmployee] =
+    useState<AdminEmployee | null>(null);
+
   const [loadingDetails, setLoadingDetails] = useState(false);
   const [detailsError, setDetailsError] = useState("");
 
@@ -245,16 +248,6 @@ export function AdminEmployees() {
   async function handleToggleStatus(employee: AdminEmployee) {
     const nextStatus = !employee.is_active;
 
-    const confirmed = window.confirm(
-      nextStatus
-        ? `Activate ${employee.full_name}?`
-        : `Deactivate ${employee.full_name}?`,
-    );
-
-    if (!confirmed) {
-      return;
-    }
-
     try {
       setError("");
 
@@ -293,6 +286,8 @@ export function AdminEmployees() {
           : "Unable to update employee status.";
 
       setError(message);
+    } finally {
+      setStatusEmployee(null);
     }
   }
 
@@ -697,9 +692,7 @@ export function AdminEmployees() {
                         <Button
                           variant="secondary"
                           className="px-2"
-                          onClick={() =>
-                            void handleToggleStatus(employee)
-                          }
+                          onClick={() => setStatusEmployee(employee)}
                           disabled={deletingEmployeeId === employee.id}
                         >
                           {employee.is_active
@@ -1100,6 +1093,85 @@ export function AdminEmployees() {
           </div>
         </div>
       )}
+
+      {/* Activate / Deactivate Confirmation */}
+      {statusEmployee && (
+        <div
+          className="fixed inset-0 z-[80] flex items-center justify-center bg-slate-950/50 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="status-confirmation-title"
+        >
+          <div className="w-full max-w-md rounded-2xl border border-app-border bg-white shadow-2xl">
+            <div className="p-6">
+              <div
+                className={`flex h-12 w-12 items-center justify-center rounded-full ${
+                  statusEmployee.is_active
+                    ? "bg-amber-50 text-amber-600"
+                    : "bg-green-50 text-app-success"
+                }`}
+              >
+                {statusEmployee.is_active ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Check className="h-6 w-6" />
+                )}
+              </div>
+
+              <h2
+                id="status-confirmation-title"
+                className="mt-4 text-lg font-semibold text-app-foreground"
+              >
+                {statusEmployee.is_active
+                  ? "Deactivate Employee?"
+                  : "Activate Employee?"}
+              </h2>
+
+              <p className="mt-2 text-sm leading-6 text-app-muted">
+                {statusEmployee.is_active
+                  ? `${statusEmployee.full_name} will no longer be able to access the CIVORA employee portal.`
+                  : `${statusEmployee.full_name} will regain access to the CIVORA employee portal.`}
+              </p>
+
+              <div className="mt-4 rounded-lg border border-app-border bg-app-background/50 p-4">
+                <p className="text-xs font-medium uppercase tracking-wide text-app-muted">
+                  Employee
+                </p>
+
+                <p className="mt-1 font-medium text-app-foreground">
+                  {statusEmployee.full_name}
+                </p>
+
+                <p className="mt-1 break-all text-sm text-app-muted">
+                  {statusEmployee.email}
+                </p>
+              </div>
+
+              <div className="mt-6 flex justify-end gap-2">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => setStatusEmployee(null)}
+                >
+                  Cancel
+                </Button>
+
+                <Button
+                  type="button"
+                  onClick={() =>
+                    void handleToggleStatus(statusEmployee)
+                  }
+                >
+                  {statusEmployee.is_active
+                    ? "Deactivate Employee"
+                    : "Activate Employee"}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Password Reset Result */}
       {resetEmployee && resetTemporaryPassword && (
         <div

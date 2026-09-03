@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
+import { Logo } from "./Logo";
 import { useAuth } from "../../context/AuthContext";
+
 
 const navigation = [
   {
@@ -63,15 +65,22 @@ export function AdminLayout() {
         {/* Desktop Sidebar */}
         <aside className="hidden w-64 shrink-0 border-r border-app-border bg-app-surface lg:flex lg:flex-col">
           {/* Brand */}
-          <div className="flex h-16 items-center border-b border-app-border px-6">
-            <div>
-              <p className="text-sm font-semibold tracking-wide text-brand-primary">
-                CIVORA
-              </p>
+          <div className="flex h-16 items-center border-b border-app-border px-5">
+            <div className="flex items-center gap-2.5">
+              <img
+                src="/logo_withoutword.png"
+                alt="CIVORA"
+                className="h-8 w-8 object-contain"
+              />
 
-              <p className="text-xs text-app-muted">
-                Administration
-              </p>
+              <div>
+                <p className="text-sm font-semibold tracking-wide text-brand-primary">
+                  CIVORA
+                </p>
+                <p className="text-xs text-app-muted">
+                  Administration
+                </p>
+              </div>
             </div>
           </div>
 

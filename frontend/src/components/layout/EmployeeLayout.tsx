@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
 
+import { Logo } from "./Logo";
 import { useAuth } from "../../context/AuthContext";
 
 const navigation = [
@@ -46,13 +47,22 @@ export function EmployeeLayout() {
       <div className="flex min-h-screen">
         <aside className="hidden w-64 shrink-0 border-r border-app-border bg-app-surface lg:flex lg:flex-col">
           <div className="flex h-16 items-center border-b border-app-border px-6">
-            <div>
-              <p className="text-sm font-semibold tracking-wide text-brand-primary">
-                CIVORA
-              </p>
-              <p className="text-xs text-app-muted">
-                Employee Portal
-              </p>
+            <div className="flex items-center gap-3">
+              <img
+                src="/logo_CIVORA.png"
+                alt="CIVORA"
+                className="h-9 w-9 object-contain"
+              />
+
+              <div>
+                <p className="text-sm font-semibold tracking-wide text-brand-primary">
+                  CIVORA
+                </p>
+
+                <p className="text-xs text-app-muted">
+                  Employee Portal
+                </p>
+              </div>
             </div>
           </div>
 

@@ -20,10 +20,8 @@ class ApplicationService:
     ) -> Application:
 
         # Verify scheme exists
-        scheme = SchemeRepository.get_by_id(
-            db,
-            scheme_id,
-        )
+        repository = SchemeRepository(db)
+        scheme = repository.get_by_id(scheme_id)
 
         if not scheme:
             raise ValueError("Scheme not found.")

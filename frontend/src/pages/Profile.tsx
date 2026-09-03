@@ -12,6 +12,7 @@ export function Profile() {
   const [profile, setProfile] = useState<CitizenProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const loadProfile = useCallback(async () => {
     setLoading(true);
@@ -38,6 +39,11 @@ export function Profile() {
     try {
       const saved = exists ? await updateProfile(payload) : await createProfile(payload);
       setProfile(saved);
+      setSuccessMessage(
+        exists
+          ? "Profile updated successfully. CIVORA will use your latest information for scheme eligibility and personalized recommendations."
+          : "Profile completed successfully. CIVORA can now check your eligible government schemes and generate personalized recommendations.",
+      );
     } catch (err) {
       throw new Error(getErrorMessage(err, "Unable to save your profile."));
     }
@@ -50,6 +56,13 @@ export function Profile() {
         title="Citizen Profile"
       />
       {loading ? <CardSkeleton rows={8} /> : null}
+      {!loading && successMessage ? (
+        <div className="mb-6 rounded-lg border border-green-200 bg-green-50 p-4">
+          <p className="text-sm font-medium text-green-800">
+            ✓ {successMessage}
+          </p>
+        </div>
+      ) : null}
       {!loading && error ? <ErrorState message={error} onRetry={loadProfile} /> : null}
       {!loading && !error ? <ProfileForm key={profile?.updated_at ?? "new"} onSubmit={handleSubmit} profile={profile} /> : null}
     </div>
